@@ -15,6 +15,7 @@
 		 svg.selectAll("rect").data(data).enter().append("rect")
 		 .attr("x",padding)
 		 .attr("y", function(d,i){ return padding + i * ( height + padding ); })
+		 .attr("label", function(d) { return d.label; })
 		 .attr("width", function(d){ return d.width; })
 		 .attr("height", height)
 		 .style("fill", function(d){ return d.color; });

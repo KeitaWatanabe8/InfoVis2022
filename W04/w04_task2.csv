@@ -1,4 +1,4 @@
-label,width,color 
-"label1",100,"red"
-"label2",50,"blue"
-"label3",80,"red"
+width,color,label
+100,"red","label1"
+50,"blue","label2"
+80,"red","label3"

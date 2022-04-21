@@ -21,19 +21,18 @@
 	 function draw(data){
 		 svg.selectAll("rect").data(data).enter().append("rect")
 		 .attr("x",padding)
-		 .attr("y", function(d,i){ return padding + i * ( height + padding ); })
-		 .attr("label", function(d){ return d.label; })
+		 .attr("y", function(d,i){ return y_padding + i * ( height + y_padding ); })
 		 .attr("width", function(d){ return d.width; })
 		 .attr("height", height)
 		 .style("fill", function(d){ return d.color; });
 		 svg.selectAll("text").data(data).enter().append("text")
-	    .text(function(d){ return d.label; })
-		.attr("text-anchor", "middle")
-		.attr("x", padding - text_padding)
-	    .attr("y", function(d,i){ return y_padding + i * ( height + y_padding ) + text_height; })
-		.attr("font-family", "sans-serif")
-	    .attr("font-size", "10px")
-	    .attr("fill", "black");
+	     .text(function(d){ return d.label; })
+		 .attr("text-anchor", "middle")
+		 .attr("x", padding - text_padding)
+	     .attr("y", function(d,i){ return y_padding + i * ( height + y_padding ) + text_height; })
+		 .attr("font-family", "sans-serif")
+	     .attr("font-size", "10px")
+	     .attr("fill", "black");
 	 };
 	</script>
     </body>

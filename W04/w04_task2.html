@@ -6,19 +6,34 @@
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script>
 	 var svg = d3.select("body").append("svg");
-	 d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W04/w04_task2.csv", draw );
+	d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W04/w04_task2.csv", draw );
 
-	 var padding = 10;
+	 /*var data = [
+	     {width: 100, color: 'red', label: 'label1'},
+	     {width: 50,  color: 'green', label: 'label2'},
+	     {width: 80,  color: 'blue',label: 'label3'} ];*/
+	 var padding = 40;
+	 var y_padding = 10;
 	 var height = 20;
+	 var text_padding = 20;
+	 var text_height = 15;
 	 var svg = d3.select("body").append("svg");
 	 function draw(data){
 		 svg.selectAll("rect").data(data).enter().append("rect")
 		 .attr("x",padding)
 		 .attr("y", function(d,i){ return padding + i * ( height + padding ); })
-		 .attr("label", function(d) { return d.label; })
+		 .attr("label", function(d){ return d.label; })
 		 .attr("width", function(d){ return d.width; })
 		 .attr("height", height)
 		 .style("fill", function(d){ return d.color; });
+		 svg.selectAll("text").data(data).enter().append("text")
+	    .text(function(d){ return d.label; })
+		.attr("text-anchor", "middle")
+		.attr("x", padding - text_padding)
+	    .attr("y", function(d,i){ return y_padding + i * ( height + y_padding ) + text_height; })
+		.attr("font-family", "sans-serif")
+	    .attr("font-size", "10px")
+	    .attr("fill", "black");
 	 };
 	</script>
     </body>

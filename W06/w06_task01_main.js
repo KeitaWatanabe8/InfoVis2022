@@ -23,7 +23,7 @@ class ScatterPlot {
             parent: config.parent,
             width: config.width || 256,
             height: config.height || 256,
-            margin: config.margin || {top:10, right:10, bottom:10, left:10}
+            margin: config.margin || {top:30, right:30, bottom:30, left:30}
         }
         this.data = data;
         this.init();
@@ -49,10 +49,10 @@ class ScatterPlot {
             .range( [0, self.inner_height] );
 
         self.xaxis = d3.axisBottom( self.xscale )
-            .ticks(6);
+            .ticks(15);
 
         self.yaxis = d3.axisLeft( self.yscale )
-            .ticks(6);
+            .ticks(15);
 
         self.xaxis_group = self.chart.append('g')
             .attr('transform', `translate(0, ${self.inner_height})`);

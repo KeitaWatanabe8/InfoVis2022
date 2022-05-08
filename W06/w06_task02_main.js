@@ -60,6 +60,33 @@ class ScatterPlot {
         self.yaxis_group = self.chart.append('g')
             .attr('transform', `translate(0, 0)`)
             .attr( "id","yaxis" );
+
+        self.svg.append("g")
+            .append("text")
+            .attr('transform', `translate(275, 30)`)
+            .attr("fill", "black")
+            .attr("text-anchor", "middle")
+            .attr("font-size", "20pt")
+            .attr("font-weight", "bold")
+            .text("Scatter Plot");
+
+        self.svg.append("g")
+            .append("text")
+            .attr('transform', `translate(250, ${self.inner_height + 90})`)
+            .attr("fill", "black")
+            .attr("text-anchor", "middle")
+            .attr("font-size", "10pt")
+            .attr("font-weight", "bold")
+            .text("X Label");
+
+        self.svg.append("g")
+            .append("text")
+            .attr('transform', `translate(60, ${self.inner_height / 2 + 50})rotate(-90)`)
+            .attr("fill", "black")
+            .attr("text-anchor", "middle")
+            .attr("font-size", "10pt")
+            .attr("font-weight", "bold")
+            .text("Y Label");
     }
 
     update() {
@@ -92,5 +119,8 @@ class ScatterPlot {
 
         self.yaxis_group
             .call( self.yaxis );
+
+        self.xtext_group
+            .call( self.xtext );
     }
 }

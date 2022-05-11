@@ -1,6 +1,6 @@
-d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/data.csv")
+/*d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/data.csv")
     .then( data => {
-        data.forEach( d => { d.x = +d.x; d.y = +d.y; });
+        data.forEach( d => { d.label = +d.label; d.value = +d.value; });
 
         var config = {
             parent: '#drawing_region',
@@ -14,7 +14,15 @@ d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/data.csv")
     })
     .catch( error => {
         console.log( error );
-    });
+    });*/
+
+    var data = [
+        {label:'Apple', value:100},
+        {label:'Banana', value:200},
+        {label:'Cookie', value:50},
+        {label:'Doughnut', value:120},
+        {label:'Egg', value:80}
+    ];
 
 class BarPlot {
 

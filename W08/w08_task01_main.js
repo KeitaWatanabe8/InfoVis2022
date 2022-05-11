@@ -9,8 +9,8 @@ d3.csv("https://vizlab-kobe-lecture.github.io/InfoVis2021/W08/data.csv")
             margin: {top:50, right:100, bottom:150, left:100}
         };
 
-        const scatter_plot = new BarPlot( config, data );
-        scatter_plot.update();
+        const bar_plot = new BarPlot( config, data );
+        bar_plot.update();
     })
     .catch( error => {
         console.log( error );

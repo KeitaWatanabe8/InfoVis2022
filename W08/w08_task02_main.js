@@ -62,17 +62,22 @@ class LineChart {
             .attr('transform', `translate(0, 0)`)
             .attr( "id","yaxis" );
 
+        self.line = d3.line()
+            .x( d => self.xscale( d.x ) )
+            .y( d => self.yscale( d.y ) );
     }
 
     update() {
         let self = this;
 
-        const xmin = d3.min( self.data, d => d.x );
-        const xmax = d3.max( self.data, d => d.x );
+        const space = 3;
+
+        const xmin = d3.min( self.data, d => d.x ) - space;
+        const xmax = d3.max( self.data, d => d.x ) + space;
         self.xscale.domain( [xmin, xmax] );
 
-        const ymin = d3.min( self.data, d => d.y );
-        const ymax = d3.max( self.data, d => d.y );
+        const ymin = d3.min( self.data, d => d.y ) - space;
+        const ymax = d3.max( self.data, d => d.y ) + space;
         self.yscale.domain( [ymax, ymin] );
 
         self.render();
@@ -81,14 +86,18 @@ class LineChart {
     render() {
         let self = this;
 
-        self.line = d3.line()
-            .x( d => self.xscale( d.x ) )
-            .y( d => self.yscale( d.y ) );
-
         self.chart.append('path')
             .attr('d', self.line(self.data))
             .attr('stroke', 'black')
             .attr('fill', 'none');
+
+        self.chart.selectAll("circle")
+            .data(self.data)
+            .enter()
+            .append("circle")
+            .attr("cx", d => self.xscale( d.x ) )
+            .attr("cy", d => self.yscale( d.y ) )
+            .attr("r", d => d.r );
 
         self.xaxis_group
             .call( self.xaxis );

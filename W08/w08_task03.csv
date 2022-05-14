@@ -1,5 +1,5 @@
-label,value
-"A",40
-"B",20
-"O",30
-"AB",10
+label,value,color
+"A",40,"red"
+"B",20,"blue"
+"O",30,"black"
+"AB",10,"purple"

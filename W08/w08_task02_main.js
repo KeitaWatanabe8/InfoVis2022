@@ -65,6 +65,11 @@ class LineChart {
         self.line = d3.line()
             .x( d => self.xscale( d.x ) )
             .y( d => self.yscale( d.y ) );
+
+        self.area = d3.area()
+            .x( d => self.xscale( d.x ) )
+            .y1( d => self.yscale( d.y ) )
+            .y0( self.inner_height );
     }
 
     update() {
@@ -90,6 +95,11 @@ class LineChart {
             .attr('d', self.line(self.data))
             .attr('stroke', 'black')
             .attr('fill', 'none');
+
+        self.chart.append('path')
+            .attr('d', self.area(self.data))
+            .attr('stroke', 'black')
+            .attr('fill', 'pink');
 
         self.chart.selectAll("circle")
             .data(self.data)

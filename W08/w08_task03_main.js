@@ -1,6 +1,6 @@
 d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/w08_task03.csv")
     .then( data => {
-        data.forEach( d => { d.label = d.label; d.value = +d.value; });
+        data.forEach( d => { d.label = d.label; d.value = +d.value; d.color = d.color; });
 
         var config = {
             parent: '#drawing_region',
@@ -45,7 +45,7 @@ d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/w08_task03.csv")
                 .value(d => d.value);
 
             self.arc = d3.arc()
-                .innerRadius(0)
+                .innerRadius(self.config.radius/2)
                 .outerRadius(self.config.radius);
         }
 
@@ -63,9 +63,18 @@ d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/w08_task03.csv")
                 .enter()
                 .append('path')
                 .attr('d', self.arc)
-                .attr('fill', 'black')
+                .attr('fill', d => d.color )
                 .attr('stroke', 'white')
                 .style('stroke-width', '2px');
+
+            self.chart.selectAll('text')
+                .data(self.data)
+                .enter()
+                .append('text')
+                .attr("transform", d => `translate(${self.arc.centroid(d.label)})`)
+                .text(d => d.label )
+                .attr("fill", 'pink')
+                .attr("font-size", "10px");
 
         }
     }

@@ -1,10 +1,19 @@
-var data = [
+/*var data = [
     {label:'Apple', value:100},
     {label:'Banana', value:200},
     {label:'Cookie', value:50},
     {label:'Doughnut', value:120},
     {label:'Egg', value:80}
-];
+];*/
+
+d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/data.csv")
+    .then( data => {
+        // Convert strings to numbers
+        data.forEach( d => { d.label = +d.label; d.value = +d.value; });
+    })
+    .catch( error => {
+        console.log( error );
+    });
 
 var width = 256;
 var height = 128;

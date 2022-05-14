@@ -63,6 +63,24 @@ class BarChart {
             .attr('transform', `translate(0, ${self.inner_height})`);
 
         self.yaxis_group = self.chart.append('g');
+
+        self.svg.append("g")
+            .append("text")
+            .attr('transform', `translate(245, 30)`)
+            .attr("fill", "black")
+            .attr("text-anchor", "middle")
+            .attr("font-size", "20pt")
+            .attr("font-weight", "bold")
+            .text("Bar Chart");
+
+        self.svg.append("g")
+            .append("text")
+            .attr('transform', `translate(250, ${self.inner_height + 90})`)
+            .attr("fill", "black")
+            .attr("text-anchor", "middle")
+            .attr("font-size", "10pt")
+            .attr("font-weight", "bold")
+            .text("X Label");
     }
 
     update() {
@@ -78,14 +96,6 @@ class BarChart {
 
     render() {
         let self = this;
-
-        /*self.chart.selectAll("circle")
-            .data(self.data)
-            .enter()
-            .append("circle")
-            .attr("cx", d => self.xscale( d.x ) )
-            .attr("cy", d => self.yscale( d.y ) )
-            .attr("r", d => d.r );*/
 
         self.chart.selectAll("rect").data(self.data).enter()
             .append("rect")

@@ -41,8 +41,6 @@ d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/w08_task03.csv")
             self.chart = self.svg.append('g')
                 .attr('transform', `translate(${self.config.width/2}, ${self.config.height/2})`);
 
-        
-
             self.pie = d3.pie()
                 .value(d => d.value);
 

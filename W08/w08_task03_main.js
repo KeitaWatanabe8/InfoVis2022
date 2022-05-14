@@ -63,7 +63,7 @@ d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/w08_task03.csv")
                 .enter()
                 .append('path')
                 .attr('d', self.arc)
-                .attr('fill', d => d.color )
+                .style('fill', d => d.color )
                 .attr('stroke', 'white')
                 .style('stroke-width', '2px');
 

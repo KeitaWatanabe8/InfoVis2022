@@ -23,7 +23,7 @@ class BarChart {
         this.config = {
             parent: config.parent,
             width: config.width || 256,
-            height: config.height || 128,
+            height: config.height || 256,
             margin: config.margin || {top:10, right:10, bottom:20, left:60}
         }
         this.data = data;
@@ -43,24 +43,30 @@ class BarChart {
         self.inner_width = self.config.width - self.config.margin.left - self.config.margin.right;
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
-        self.xscale = d3.scaleLinear()
-            .domain([0, d3.max(self.data, d => d.value)])
-            .range( [0, self.inner_width] );
-
-        self.yscale = d3.scaleBand()
+        self.xscale = d3.scaleBand()
             .domain(self.data.map(d => d.label))
-            .range( [0, self.inner_height] )
+            .range( [0, self.inner_width] )
             .paddingInner(0.1);
 
+        self.yscale = d3.scaleLinear()
+            .domain([0, d3.max(self.data, d => d.value)])
+            .rangeRound([self.inner_height, 0])
+            .range( [0, self.inner_height] );
+
+        self.axis_yscale = d3.scaleLinear()
+            .domain([d3.max(self.data, d => d.value), 0])
+            .rangeRound([self.inner_height, 0])
+            .range( [0, self.inner_height] );
+
         self.xaxis = d3.axisBottom( self.xscale )
-            .ticks(5)
             .tickSizeOuter(0);
 
-        self.yaxis = d3.axisLeft( self.yscale )
+        self.yaxis = d3.axisLeft( self.axis_yscale )
+            .ticks(15)
             .tickSizeOuter(0);
 
         self.xaxis_group = self.chart.append('g')
-            .attr('transform', `translate(0, ${self.inner_height})`);
+            .attr('transform', `translate(0, ${self.inner_width})`);
 
         self.yaxis_group = self.chart.append('g');
 
@@ -87,9 +93,10 @@ class BarChart {
         let self = this;
 
         const valuemax = d3.max( self.data, d => d.value );
-        
-        self.xscale.domain( [0, valuemax] );
-        self.yscale.domain(self.data.map(d => d.label));
+
+        self.xscale.domain(self.data.map(d => d.label));
+        self.yscale.domain( [0,valuemax] );
+        self.axis_yscale.domain( [valuemax,0] );
 
         self.render();
     }
@@ -99,10 +106,10 @@ class BarChart {
 
         self.chart.selectAll("rect").data(self.data).enter()
             .append("rect")
-            .attr("x", 0)
-            .attr("y", d => self.yscale(d.label))
-            .attr("width", d => self.xscale(d.value))
-            .attr("height", self.yscale.bandwidth());
+            .attr("x", d => self.xscale(d.label))
+            .attr("y",d => self.inner_height - self.yscale(d.value))
+            .attr("width", self.xscale.bandwidth())
+            .attr("height", d => self.yscale(d.value));
 
         self.xaxis_group
             .call( self.xaxis );

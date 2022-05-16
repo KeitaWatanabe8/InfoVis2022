@@ -44,9 +44,15 @@ d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/w08_task03.csv")
             self.pie = d3.pie()
                 .value(d => d.value);
 
+
             self.arc = d3.arc()
                 .innerRadius(self.config.radius/2)
                 .outerRadius(self.config.radius);
+
+            self.text_arc = d3.arc()
+                .innerRadius(self.config.radius-40)
+                .outerRadius(self.config.radius);
+            
         }
 
         update() {
@@ -58,6 +64,8 @@ d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/w08_task03.csv")
         render(){
             let self = this;
 
+            console.log(self.pie(self.data));
+
             self.chart.selectAll('pie')
                 .data( self.pie(self.data) )
                 .enter()
@@ -67,14 +75,15 @@ d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/w08_task03.csv")
                 .attr('stroke', 'white')
                 .style('stroke-width', '2px');
 
-            self.chart.selectAll('text')
+            self.chart.selectAll('pie')
                 .data(self.data)
                 .enter()
                 .append('text')
-                .attr("transform", d => `translate(${self.arc.centroid(d.label)})`)
+                .attr('transform', d => `translate(${self.text_arc.centroid(self.pie(d))})`)
                 .text(d => d.label )
                 .attr("fill", 'pink')
-                .attr("font-size", "10px");
+                .style("text-anchor", "middle")
+                .attr("font-size", "20px");
 
         }
     }

@@ -11,7 +11,7 @@ d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/w08_task03.csv")
 
         const pie_chart = new PieChart( config, data );
         pie_chart.update();
-        console.log( data );
+        // console.log( data );
     })
     .catch( error => {
         console.log( error );
@@ -48,11 +48,6 @@ d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/w08_task03.csv")
             self.arc = d3.arc()
                 .innerRadius(self.config.radius/2)
                 .outerRadius(self.config.radius);
-
-            self.text_arc = d3.arc()
-                .innerRadius(self.config.radius-40)
-                .outerRadius(self.config.radius);
-            
         }
 
         update() {
@@ -71,16 +66,16 @@ d3.csv("https://watanabekeita1875040t.github.io/InfoVis2022/W08/w08_task03.csv")
                 .enter()
                 .append('path')
                 .attr('d', self.arc)
-                .style('fill', d => d.color )
+                .style('fill', d => d.data.color )
                 .attr('stroke', 'white')
                 .style('stroke-width', '2px');
 
             self.chart.selectAll('pie')
-                .data(self.data)
+                .data(self.pie(self.data))
                 .enter()
                 .append('text')
-                .attr('transform', d => `translate(${self.text_arc.centroid(self.pie(d))})`)
-                .text(d => d.label )
+                .attr('transform', d => `translate(${self.arc.centroid(d)})`)
+                .text(d => d.data.label )
                 .attr("fill", 'pink')
                 .style("text-anchor", "middle")
                 .attr("font-size", "20px");

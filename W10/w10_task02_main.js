@@ -125,8 +125,7 @@ class ScatterPlot {
                 const padding = 10;
                 d3.select('#tooltip')
                     .style('left', (e.pageX + padding) + 'px')
-                    .style('top', (e.pageY + padding) + 'px')
-                    .style("fill", 'pink');
+                    .style('top', (e.pageY + padding) + 'px');
             })
             .on('mouseleave', () => {
                 d3.select('#tooltip')

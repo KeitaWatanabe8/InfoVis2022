@@ -1,7 +1,5 @@
 let input_data;
 let scatter_plot;
-let scatter_plot2;
-let scatter_plot3;
 let line_chart;
 let filter = [];
 
@@ -13,46 +11,32 @@ d3.csv("https://WatanabeKeita1875040T.github.io/InfoVis2022/FinalTask/data.csv")
             d.patients = +d.patients;
             d.Tave = +d.Tave;
             d.Tmin = +d.Tmin;
+            d.wind = +d.wind;
+            d.suntime = +d.suntime;
+            d.humidily = +d.humidily;
+            d.rain = +d.rain;
         });
 
         const color_scale = d3.scaleOrdinal( d3.schemeCategory10 );
         color_scale.domain(['setosa','versicolor','virginica']);
 
-        scatter_plot = new ScatterPlot( {
-            parent: '#drawing_region_scatterplot',
-            width: 128,
-            height: 128,
-            margin: {top:10, right:10, bottom:50, left:50},
-            xlabel: 'Sepal length [cm]',
-            ylabel: 'Sepal width [cm]',
-            cscale: color_scale
-        }, input_data );
-        console.log( input_data );
-        scatter_plot.update();
+        const value_name = [ "Tave","Tmax","Tmin","wind","suntime","humidily","rain"]
 
-        scatter_plot2 = new ScatterPlot( {
-            parent: '#drawing_region_scatterplot2',
-            width: 128,
-            height: 128,
-            margin: {top:10, right:10, bottom:50, left:50},
-            xlabel: 'Sepal length [cm]',
-            ylabel: 'Sepal width [cm]',
-            cscale: color_scale
-        }, input_data );
-        console.log( input_data );
-        scatter_plot2.update2();
-
-        scatter_plot3 = new ScatterPlot( {
-            parent: '#drawing_region_scatterplot3',
-            width: 128,
-            height: 128,
-            margin: {top:10, right:10, bottom:50, left:50},
-            xlabel: 'Sepal length [cm]',
-            ylabel: 'Sepal width [cm]',
-            cscale: color_scale
-        }, input_data );
-        console.log( input_data );
-        scatter_plot3.update2();
+        for (let i = 1; i <= 7; i++) {
+            let a = '#drawing_region_scatterplot' + i;
+            console.log(a);
+            scatter_plot = new ScatterPlot( {
+                parent: a,
+                width: 156,
+                height: 156,
+                margin: {top:10, right:10, bottom:50, left:50},
+                xlabel: 'Heatstroke Patients',
+                ylabel: value_name[i-1],
+                cscale: color_scale
+            }, input_data );
+            console.log( d => d.Tmax );
+            scatter_plot.update( i );
+        }
 
         line_chart = new LineChart( {
             parent: '#drawing_region_linechart',

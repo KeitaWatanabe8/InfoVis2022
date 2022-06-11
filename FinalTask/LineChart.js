@@ -27,21 +27,31 @@ class LineChart {
         self.xscale = d3.scaleLinear()
             .range( [0, self.inner_width] );
 
-        self.yscale = d3.scaleLinear()
+        self.yscale1 = d3.scaleLinear()
+            .range( [0, self.inner_height] );
+
+        self.yscale2 = d3.scaleLinear()
             .range( [0, self.inner_height] );
 
         self.xaxis = d3.axisBottom( self.xscale )
             .ticks(5);
 
-        self.yaxis = d3.axisLeft( self.yscale )
+        self.yaxis1 = d3.axisLeft( self.yscale1 )
+            .ticks(5);
+
+        self.yaxis2 = d3.axisLeft( self.yscale2 )
             .ticks(5);
 
         self.xaxis_group = self.chart.append('g')
             .attr('transform', `translate(0, ${self.inner_height})`);
 
-        self.yaxis_group = self.chart.append('g')
+        self.yaxis_group1 = self.chart.append('g')
             .attr('transform', `translate(0, 0)`)
-            .attr( "id","yaxis" );
+            .attr( "id","yaxis1" );
+
+        self.yaxis_group2 = self.chart.append('g')
+            .attr('transform', `translate(${self.inner_width}, 0)`)
+            .attr( "id","yaxis2" );
     }
 
     update() {
@@ -50,23 +60,32 @@ class LineChart {
         const space = 3;
 
         self.xvalue = d => d.date;
-        self.yvalue = d => d.patients;
+        self.yvalue1 = d => d.patients;
+        self.yvalue2 = d => d.Tmin;
 
         const xmin = d3.min( self.data, self.xvalue ) - space;
         const xmax = d3.max( self.data, self.xvalue ) + space;
         self.xscale.domain( [xmin, xmax] );
 
-        const ymin = d3.min( self.data, self.xvalue ) - space;
-        const ymax = d3.max( self.data, self.xvalue ) + space;
-        self.yscale.domain( [ymax, ymin] );
+        const ymin1 = d3.min( self.data, self.yvalue1 ) ;
+        const ymax1 = d3.max( self.data, self.yvalue1 ) + space;
+        self.yscale1.domain( [ymax1, ymin1] );
 
-        self.line = d3.line()
+        const ymin2 = d3.min( self.data, self.yvalue2 ) ;
+        const ymax2 = d3.max( self.data, self.yvalue2 ) + space;
+        self.yscale2.domain( [ymax2, ymin2] );
+
+        self.line1 = d3.line()
             .x( d => self.xscale( self.xvalue(d) ) )
-            .y( d => self.yscale( self.yvalue(d) ) );
+            .y( d => self.yscale1( self.yvalue1(d) ) );
+
+        self.line2 = d3.line()
+            .x( d => self.xscale( self.xvalue(d) ) )
+            .y( d => self.yscale2( self.yvalue2(d) ) );
 
         self.area = d3.area()
             .x( d => self.xscale( self.xvalue(d) ) )
-            .y1( d => self.yscale( self.yvalue(d) ) )
+            .y1( d => self.yscale1( self.yvalue1(d) ) )
             .y0( self.inner_height );
 
         self.render();
@@ -76,19 +95,22 @@ class LineChart {
         let self = this;
 
         self.chart.append('path')
-            .attr('d', self.line(self.data))
-            .attr('stroke', 'black')
+            .attr('d', self.line1(self.data))
+            .attr('stroke', 'green')
             .attr('fill', 'none');
 
         self.chart.append('path')
-            .attr('d', self.area(self.data))
-            .attr('stroke', 'black')
-            .attr('fill', 'pink');
+            .attr('d', self.line2(self.data))
+            .attr('stroke', 'red')
+            .attr('fill', 'none');
 
         self.xaxis_group
             .call( self.xaxis );
 
-        self.yaxis_group
-            .call( self.yaxis );
+        self.yaxis_group1
+            .call( self.yaxis1 );
+
+        self.yaxis_group2
+            .call( self.yaxis2 );
     }
 }

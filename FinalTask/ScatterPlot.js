@@ -67,10 +67,37 @@ class ScatterPlot {
             .text( self.config.ylabel );
     }
 
-    update() {
+    update( i ) {
         let self = this;
         self.xvalue = d => d.patients;
-        self.yvalue = d => d.Tave;
+        if( i == 1 )
+        {
+            self.yvalue = d => d.Tave;
+        }
+        if( i == 2 )
+        {
+            self.yvalue = d => d.Tmax;
+        }
+        if( i == 3 )
+        {
+            self.yvalue = d => d.Tmin;
+        }
+        if( i == 4 )
+        {
+            self.yvalue = d => d.wind;
+        }
+        if( i == 5 )
+        {
+            self.yvalue = d => d.suntime;
+        }
+        if( i == 6 )
+        {
+            self.yvalue = d => d.humidily;
+        }
+        if( i == 6 )
+        {
+            self.yvalue = d => d.rain;
+        }
 
         const xmin = d3.min( self.data, self.xvalue );
         const xmax = d3.max( self.data, self.xvalue );
@@ -78,24 +105,7 @@ class ScatterPlot {
 
         const ymin = d3.min( self.data, self.yvalue );
         const ymax = d3.max( self.data, self.yvalue );
-        self.yscale.domain( [ymax, ymin] );
-
-        self.render();
-    }
-
-    update2() {
-        let self = this;
-
-        self.xvalue = d => d.patients;
-        self.yvalue = d => d.Tmin;
-
-        const xmin = d3.min( self.data, self.xvalue );
-        const xmax = d3.max( self.data, self.xvalue );
-        self.xscale.domain( [xmin, xmax] );
-
-        const ymin = d3.min( self.data, self.yvalue );
-        const ymax = d3.max( self.data, self.yvalue );
-        self.yscale.domain( [ymax, ymin] );
+        self.yscale.domain( [ymin, ymax] );
 
         self.render();
     }
@@ -118,7 +128,7 @@ class ScatterPlot {
             .on('mouseover', (e,d) => {
                 d3.select('#tooltip')
                     .style('opacity', 1)
-                    .html(`<div class="tooltip-label">${d.species}</div>(${d.sepal_length}, ${d.sepal_length})`);
+                    .html(`<div class="tooltip-label">${self.config.ylabel}</div>(${d => self.xvalue(d)}, ${d => self.self.yvalue(d)})`);
             })
             .on('mousemove', (e) => {
                 const padding = 10;

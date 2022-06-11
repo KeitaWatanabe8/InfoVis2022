@@ -128,7 +128,7 @@ class ScatterPlot {
             .on('mouseover', (e,d) => {
                 d3.select('#tooltip')
                     .style('opacity', 1)
-                    .html(`<div class="tooltip-label">${self.config.ylabel}</div>(${d => self.xvalue(d)}, ${d => self.self.yvalue(d)})`);
+                    .html(`<div class="tooltip-label">${self.config.ylabel}</div>(${self.xvalue(d)}, ${self.yvalue(d)})`);
             })
             .on('mousemove', (e) => {
                 const padding = 10;

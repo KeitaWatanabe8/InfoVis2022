@@ -119,6 +119,7 @@ class ScatterPlot {
 
         const circle_color = 'steelblue';
         const circle_radius = 3;
+        
         circles
             .attr("r", circle_radius )
             .attr("cx", d => self.xscale( self.xvalue(d) ) )

@@ -10,6 +10,7 @@ d3.csv("https://WatanabeKeita1875040T.github.io/InfoVis2022/FinalTask/data.csv")
             d.date = +d.date;
             d.patients = +d.patients;
             d.Tave = +d.Tave;
+            d.Tmax = +d.Tmax;
             d.Tmin = +d.Tmin;
             d.wind = +d.wind;
             d.suntime = +d.suntime;

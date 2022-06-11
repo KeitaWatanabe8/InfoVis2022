@@ -7,8 +7,7 @@ class ScatterPlot {
             height: config.height || 256,
             margin: config.margin || {top:10, right:10, bottom:10, left:10},
             xlabel: config.xlabel || '',
-            ylabel: config.ylabel || '',
-            cscale: config.cscale
+            ylabel: config.ylabel || ''
         }
         this.data = data;
         this.init();
@@ -94,7 +93,7 @@ class ScatterPlot {
         {
             self.yvalue = d => d.humidily;
         }
-        if( i == 6 )
+        if( i == 7 )
         {
             self.yvalue = d => d.rain;
         }

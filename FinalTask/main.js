@@ -25,7 +25,6 @@ d3.csv("https://WatanabeKeita1875040T.github.io/InfoVis2022/FinalTask/data.csv")
 
         for (let i = 1; i <= 7; i++) {
             let a = '#drawing_region_scatterplot' + i;
-            console.log(a);
             scatter_plot = new ScatterPlot( {
                 parent: a,
                 width: 156,
@@ -35,19 +34,18 @@ d3.csv("https://WatanabeKeita1875040T.github.io/InfoVis2022/FinalTask/data.csv")
                 ylabel: value_name[i-1],
                 cscale: color_scale
             }, input_data );
-            console.log( d => d.Tmax );
             scatter_plot.update( i );
         }
 
         line_chart = new LineChart( {
             parent: '#drawing_region_linechart',
-            width: 256,
-            height: 256,
-            margin: {top:10, right:10, bottom:50, left:50},
-            xlabel: 'Species',
-            cscale: color_scale
+            width: 356,
+            height: 356,
+            margin: {top:10, right:100, bottom:150, left:50},
+            xlabel: 'Date',
+            ylabel: 'Heatstroke Patients'
         }, input_data );
-        line_chart.update();
+        line_chart.update( 1 ); 
     })
     .catch( error => {
         console.log( error );

@@ -5,13 +5,15 @@ class LineChart {
             parent: config.parent,
             width: config.width || 256,
             height: config.height || 256,
-            margin: config.margin || {top:30, right:30, bottom:30, left:30}
+            margin: config.margin || {top:10, right:60, bottom:10, left:10},
+            xlabel: config.xlabel || '',
+            ylabel: config.ylabel || ''
         }
         this.data = data;
-        this.init();
+        this.init( 1 );
     }
 
-    init() {
+    init( i ) {
         let self = this;
 
         self.svg = d3.select( self.config.parent )
@@ -52,16 +54,100 @@ class LineChart {
         self.yaxis_group2 = self.chart.append('g')
             .attr('transform', `translate(${self.inner_width}, 0)`)
             .attr( "id","yaxis2" );
+
+        self.text = self.svg.append('g')
+        const ylabel_space = 45;
+        self.text.append('text')
+            .style('font-size', '12px')
+            .attr('transform', `rotate(-90)`)
+            .attr('y', self.config.margin.left - ylabel_space)
+            .attr('x', -self.config.margin.top - self.inner_height / 2)
+            .attr('text-anchor', 'middle')
+            .attr('dy', '1em')
+            .attr('stroke', 'green')
+            .text( self.config.ylabel );
+        const ylabel2_space = 210;
+
+        const value_name = [ "Tave","Tmax","Tmin","wind","suntime","humidily","rain"]
+        self.text.append('text')
+            .style('font-size', '12px')
+            .attr('transform', `rotate(-90)`)
+            .attr('y', self.config.margin.left + ylabel2_space)
+            .attr('x', -self.config.margin.top - self.inner_height / 2)
+            .attr('text-anchor', 'middle')
+            .attr('dy', '1em')
+            .attr('stroke', 'red')
+            .text( value_name[i-1] );
+
+        const xlabel_space = 40;
+        self.text.append('text')
+            .style('font-size', '12px')
+            .attr('x', self.config.margin.left + self.inner_width / 2)
+            .attr('y', self.inner_height + self.config.margin.top + xlabel_space)
+            .attr('text-anchor', 'middle')
+            .text( self.config.xlabel );
+
+        self.text.append('text')
+            .style('font-size', '12px')
+            .attr('x', self.config.margin.left + self.inner_width / 2)
+            .attr('y', self.inner_height + self.config.margin.top + xlabel_space+20)
+            .attr('text-anchor', 'middle')
+            .attr('stroke', 'green')
+            .text( "green is " + self.config.ylabel );
+
+        self.text.append('text')
+            .style('font-size', '12px')
+            .attr('x', self.config.margin.left + self.inner_width / 2)
+            .attr('y', self.inner_height + self.config.margin.top + xlabel_space+40)
+            .attr('text-anchor', 'middle')
+            .attr('stroke', 'red')
+            .text( "red is " + value_name[i-1] );
+
     }
 
-    update() {
+    update( i ) {
         let self = this;
+
+        if(i == null)
+        {
+            i=1;
+        }
+
+        i = parseInt( i );
 
         const space = 3;
 
         self.xvalue = d => d.date;
         self.yvalue1 = d => d.patients;
-        self.yvalue2 = d => d.Tmin;
+
+        if( i == 1 )
+        {
+            self.yvalue2 = d => d.Tave;
+        }
+        if( i == 2 )
+        {
+            self.yvalue2 = d => d.Tmax;
+        }
+        if( i == 3 )
+        {
+            self.yvalue2 = d => d.Tmin;
+        }
+        if( i == 4 )
+        {
+            self.yvalue2 = d => d.wind;
+        }
+        if( i == 5 )
+        {
+            self.yvalue2 = d => d.suntime;
+        }
+        if( i == 6 )
+        {
+            self.yvalue2 = d => d.humidily;
+        }
+        if( i == 7 )
+        {
+            self.yvalue2 = d => d.rain;
+        }
 
         const xmin = d3.min( self.data, self.xvalue ) - space;
         const xmax = d3.max( self.data, self.xvalue ) + space;
@@ -88,10 +174,10 @@ class LineChart {
             .y1( d => self.yscale1( self.yvalue1(d) ) )
             .y0( self.inner_height );
 
-        self.render();
+        self.render( i );
     }
 
-    render() {
+    render( i ) {
         let self = this;
 
         self.chart.append('path')
@@ -103,6 +189,7 @@ class LineChart {
             .attr('d', self.line2(self.data))
             .attr('stroke', 'red')
             .attr('fill', 'none');
+            
 
         self.xaxis_group
             .call( self.xaxis );
@@ -112,5 +199,34 @@ class LineChart {
 
         self.yaxis_group2
             .call( self.yaxis2 );
+
+        d3.select('#aa')
+        .on('click', d => {
+        //let i = parseInt( document.getElementById("#number2") );
+        i++;
+        if( i== 8 )
+        {
+            i = 1;
+        }
+        self.chart.remove();
+        self.text.remove();
+        self.init(i);
+        self.update(i);
+        console.log(i);
+        });
+        d3.select('#bb')
+        .on('click', d => {
+        //let i = parseInt( document.getElementById("#number2") );
+        i--;
+        if( i == 0 )
+        {
+            i = 7;
+        }
+        self.chart.remove();
+        self.text.remove();
+        self.init(i);
+        self.update(i);
+        console.log(i);
+        });
     }
 }

@@ -5,12 +5,14 @@ let scatter_plot3;
 let line_chart;
 let filter = [];
 
-d3.csv("https://vizlab-kobe-lecture.github.io/InfoVis2021/W12/iris.csv")
+d3.csv("https://WatanabeKeita1875040T.github.io/InfoVis2022/FinalTask/finalData.csv")
     .then( data => {
         input_data = data;
         input_data.forEach( d => {
-            d.sepal_length = +d.sepal_length;
-            d.sepal_width = +d.sepal_width;
+            d.date = +d.date;
+            d.patients = +d.patients;
+            d.Tave = +d.Tave;
+            d.Tmin = +d.Tmin;
         });
 
         const color_scale = d3.scaleOrdinal( d3.schemeCategory10 );

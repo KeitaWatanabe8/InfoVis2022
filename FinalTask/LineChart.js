@@ -49,8 +49,8 @@ class LineChart {
 
         const space = 3;
 
-        self.xvalue = d => d.sepal_length;
-        self.yvalue = d => d.sepal_width;
+        self.xvalue = d => d.date;
+        self.yvalue = d => d.patients;
 
         const xmin = d3.min( self.data, self.xvalue ) - space;
         const xmax = d3.max( self.data, self.xvalue ) + space;

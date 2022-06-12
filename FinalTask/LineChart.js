@@ -10,10 +10,10 @@ class LineChart {
             ylabel: config.ylabel || ''
         }
         this.data = data;
-        this.init( 1 );
+        this.init();
     }
 
-    init( i ) {
+    init() {
         let self = this;
 
         self.svg = d3.select( self.config.parent )
@@ -66,47 +66,18 @@ class LineChart {
             .attr('dy', '1em')
             .attr('stroke', 'green')
             .text( self.config.ylabel );
-        const ylabel2_space = 210;
-
-        const value_name = [ "Tave","Tmax","Tmin","wind","suntime","humidily","rain"]
-        self.text.append('text')
-            .style('font-size', '12px')
-            .attr('transform', `rotate(-90)`)
-            .attr('y', self.config.margin.left + ylabel2_space)
-            .attr('x', -self.config.margin.top - self.inner_height / 2)
-            .attr('text-anchor', 'middle')
-            .attr('dy', '1em')
-            .attr('stroke', 'red')
-            .text( value_name[i-1] );
-
-        const xlabel_space = 40;
-        self.text.append('text')
-            .style('font-size', '12px')
-            .attr('x', self.config.margin.left + self.inner_width / 2)
-            .attr('y', self.inner_height + self.config.margin.top + xlabel_space)
-            .attr('text-anchor', 'middle')
-            .text( self.config.xlabel );
-
-        self.text.append('text')
-            .style('font-size', '12px')
-            .attr('x', self.config.margin.left + self.inner_width / 2)
-            .attr('y', self.inner_height + self.config.margin.top + xlabel_space+20)
-            .attr('text-anchor', 'middle')
-            .attr('stroke', 'green')
-            .text( "green is " + self.config.ylabel );
-
-        self.text.append('text')
-            .style('font-size', '12px')
-            .attr('x', self.config.margin.left + self.inner_width / 2)
-            .attr('y', self.inner_height + self.config.margin.top + xlabel_space+40)
-            .attr('text-anchor', 'middle')
-            .attr('stroke', 'red')
-            .text( "red is " + value_name[i-1] );
 
     }
 
-    update( i ) {
+    update( i, flag ) {
         let self = this;
+
+        if(flag)
+        {
+            this.chart.remove();
+            this.text.remove();
+            this.init();
+        }
 
         if(i == null)
         {
@@ -200,33 +171,40 @@ class LineChart {
         self.yaxis_group2
             .call( self.yaxis2 );
 
-        d3.select('#aa')
-        .on('click', d => {
-        //let i = parseInt( document.getElementById("#number2") );
-        i++;
-        if( i== 8 )
-        {
-            i = 1;
-        }
-        self.chart.remove();
-        self.text.remove();
-        self.init(i);
-        self.update(i);
-        console.log(i);
-        });
-        d3.select('#bb')
-        .on('click', d => {
-        //let i = parseInt( document.getElementById("#number2") );
-        i--;
-        if( i == 0 )
-        {
-            i = 7;
-        }
-        self.chart.remove();
-        self.text.remove();
-        self.init(i);
-        self.update(i);
-        console.log(i);
-        });
+        const xlabel_space = 40;
+        self.text.append('text')
+            .style('font-size', '12px')
+            .attr('x', self.config.margin.left + self.inner_width / 2)
+            .attr('y', self.inner_height + self.config.margin.top + xlabel_space)
+            .attr('text-anchor', 'middle')
+            .text( self.config.xlabel );
+
+        self.text.append('text')
+            .style('font-size', '12px')
+            .attr('x', self.config.margin.left + self.inner_width / 2)
+            .attr('y', self.inner_height + self.config.margin.top + xlabel_space+20)
+            .attr('text-anchor', 'middle')
+            .attr('stroke', 'green')
+            .text( "green is " + self.config.ylabel );
+
+        const ylabel2_space = 210;
+        const value_name = [ "Tave","Tmax","Tmin","wind","suntime","humidily","rain"]
+        self.text.append('text')
+            .style('font-size', '12px')
+            .attr('x', self.config.margin.left + self.inner_width / 2)
+            .attr('y', self.inner_height + self.config.margin.top + xlabel_space+40)
+            .attr('text-anchor', 'middle')
+            .attr('stroke', 'red')
+            .text( "red is " + value_name[i-1] );
+
+        self.text.append('text')
+            .style('font-size', '12px')
+            .attr('transform', `rotate(-90)`)
+            .attr('y', self.config.margin.left + ylabel2_space)
+            .attr('x', -self.config.margin.top - self.inner_height / 2)
+            .attr('text-anchor', 'middle')
+            .attr('dy', '1em')
+            .attr('stroke', 'red')
+            .text( value_name[i-1] );
     }
 }

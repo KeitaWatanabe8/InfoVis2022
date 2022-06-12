@@ -1,4 +1,4 @@
-class ScatterPlot {
+class ScatterPlotList {
 
     constructor( config, data ) {
         this.config = {
@@ -6,8 +6,7 @@ class ScatterPlot {
             width: config.width || 256,
             height: config.height || 256,
             margin: config.margin || {top:10, right:10, bottom:10, left:10},
-            xlabel: config.xlabel || '',
-            ylabel: config.ylabel || ''
+            xlabel: config.xlabel || ''
         }
         this.data = data;
         this.init();
@@ -22,6 +21,8 @@ class ScatterPlot {
 
         self.chart = self.svg.append('g')
             .attr('transform', `translate(${self.config.margin.left}, ${self.config.margin.top})`);
+
+        self.text = self.svg.append('g')
 
         self.inner_width = self.config.width - self.config.margin.left - self.config.margin.right;
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
@@ -48,26 +49,24 @@ class ScatterPlot {
         self.yaxis_group = self.chart.append('g');
 
         const xlabel_space = 40;
-        self.svg.append('text')
+        self.text.append('text')
             .style('font-size', '12px')
             .attr('x', self.config.margin.left + self.inner_width / 2)
             .attr('y', self.inner_height + self.config.margin.top + xlabel_space)
             .attr('text-anchor', 'middle')
             .text( self.config.xlabel );
-
-        const ylabel_space = 45;
-        self.svg.append('text')
-            .style('font-size', '12px')
-            .attr('transform', `rotate(-90)`)
-            .attr('y', self.config.margin.left - ylabel_space)
-            .attr('x', -self.config.margin.top - self.inner_height / 2)
-            .attr('text-anchor', 'middle')
-            .attr('dy', '1em')
-            .text( self.config.ylabel );
     }
 
-    update( i ) {
+    update( i, flag1, flag2 ) {
         let self = this;
+
+        if(flag2)
+        {
+            this.chart.remove();
+            this.text.remove();
+            this.init();
+        }
+        
         self.xvalue = d => d.patients;
         if( i == 1 )
         {
@@ -106,26 +105,34 @@ class ScatterPlot {
         const ymax = d3.max( self.data, self.yvalue );
         self.yscale.domain( [ymin, ymax] );
 
-        self.render();
+        self.render( i, flag1 );
     }
 
-    render() {
+    render( i, flag ) {
         let self = this;
 
         let circles = self.chart.selectAll("circle")
             .data(self.data)
             .join('circle');
 
-        const circle_color = 'steelblue';
         const circle_radius = 3;
         
         circles
             .attr("r", circle_radius )
             .attr("cx", d => self.xscale( self.xvalue(d) ) )
             .attr("cy", d => self.yscale( self.yvalue(d) ) )
-            .attr('fill', 'green')
-            .attr('stroke', 'green');
 
+        circles
+            .attr('stroke', 'black')
+            .attr('fill', 'black');
+
+        if(flag)
+        {
+            circles
+                .attr('stroke', 'green')
+                .attr('fill', 'green');
+        }
+        
         circles
             .on('mouseover', (e,d) => {
                 d3.select('#tooltip')
@@ -148,5 +155,17 @@ class ScatterPlot {
 
         self.yaxis_group
             .call( self.yaxis );
+
+        const value_name = [ "Tave","Tmax","Tmin","wind","suntime","humidily","rain"]
+        const ylabel_space = 45;
+        self.text.append('text')
+            .style('font-size', '12px')
+            .attr('transform', `rotate(-90)`)
+            .attr('y', self.config.margin.left - ylabel_space)
+            .attr('x', -self.config.margin.top - self.inner_height / 2)
+            .attr('text-anchor', 'middle')
+            .attr('dy', '1em')
+            .text( value_name[i-1] );
+
     }
 }

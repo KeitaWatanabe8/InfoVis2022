@@ -129,8 +129,8 @@ class ScatterPlotList {
         if(flag)
         {
             circles
-                .attr('stroke', 'green')
-                .attr('fill', 'green');
+                .attr('stroke', 'red')
+                .attr('fill', 'red');
         }
         
         circles

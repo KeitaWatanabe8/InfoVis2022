@@ -4,7 +4,7 @@ let scatter_plot;
 let line_chart;
 let filter = [];
 
-d3.csv("https://WatanabeKeita1875040T.github.io/InfoVis2022/FinalTask/data.csv")
+d3.csv("https://KeitaWatanabe8.github.io/InfoVis2022/FinalTask/data.csv")
     .then( data => {
         input_data = data;
         input_data.forEach( d => {
